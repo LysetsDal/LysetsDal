@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+emulate -LR szh
+
+function fcount() {
+    ls | wc -l
+}
+
+fcount

@@ -1,0 +1,38 @@
+#!/bin/zsh
+
+PURPLE='\033[35m'
+CYAN='\033[36m'
+YELLOW='\033[33m'
+NC='\033[0m'
+ORANGE='\033[38;5;208m'
+
+function ip() {
+    if [[ $1 == "a" ]] || [[ $1 == "-a" ]] ; then
+        # For lo0
+        ifconfig lo0 | awk -v purple="$PURPLE" -v cyan="$CYAN" -v orange="$ORANGE" -v nc="$NC" '
+        /127\.0\.0\.1/ { gsub(/127\.0\.0\.1/, purple "&" nc) }
+        /lo0:/ { gsub(/lo0:/, cyan "&" nc) }
+        /([a-fA-F0-9]{2}:){5}[a-fA-F0-9]{2}/ { gsub(/([a-fA-F0-9]{2}:){5}[a-fA-F0-9]{2}/, orange "&" nc) }
+        { print }'
+        
+        echo ""  # Optional: for a newline separator
+
+        # For en0
+        ifconfig en0 | awk -v purple="$PURPLE" -v cyan="$CYAN" -v orange="$ORANGE" -v nc="$NC" '
+        /inet/ && !/::/ { gsub(/[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+/, purple "&" nc) }
+        /en0:/ { gsub(/en0:/, cyan "&" nc) }
+        /([a-fA-F0-9]{2}:){5}[a-fA-F0-9]{2}/ { gsub(/([a-fA-F0-9]{2}:){5}[a-fA-F0-9]{2}/, orange "&" nc) }
+        { print }'
+        
+        echo ""  # Optional: for a newline separator
+
+        # For en1
+        ifconfig en1 | awk -v purple="$PURPLE" -v cyan="$CYAN" -v orange="$ORANGE" -v nc="$NC" '
+        /inet/ && !/::/ { gsub(/[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+/, purple "&" nc) }
+        /en1:/ { gsub(/en1:/, cyan "&" nc) }
+        /([a-fA-F0-9]{2}:){5}[a-fA-F0-9]{2}/ { gsub(/([a-fA-F0-9]{2}:){5}[a-fA-F0-9]{2}/, orange "&" nc) }
+        { print }'
+    else
+        echo -e "Bad arg. only accepts 'a' or '-a'"
+    fi
+}

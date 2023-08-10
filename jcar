@@ -1,0 +1,14 @@
+#!/bin/zsh
+
+emulate -LR zsh
+
+function jcar() {
+        prefix="$1"
+        File="${prefix%%.*}"
+        trap "rm $1.class" SIGINT SIGTERM
+        javac $1
+        java $1
+        rm "$File.class"
+}
+
+jcar "$1"

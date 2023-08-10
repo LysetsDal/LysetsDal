@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+function gccr() {
+        PREFIX="$1"
+        FILE="${PREFIX%%.*}"
+        trap 'rm "$FILE".out' SIGINT SIGTERM
+        gcc -o "$FILE".out "$1"
+        "./$FILE".out
+        rm "$FILE".out
+}
+gccr "$1"
